@@ -1,6 +1,6 @@
 # API básica com FastAPI
 
-## 🚀 1. Instalando o FastAPI e o servidor ASGI (Uvicorn)
+## 🚀 1. Instalando o FastAPI
 
 Você precisa ter o Python instalado (versão 3.7+). Em seguida, instale o FastAPI:
 
