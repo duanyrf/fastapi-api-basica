@@ -4,30 +4,40 @@ from pydantic import BaseModel
 app = FastAPI()
 
 
-class Item(BaseModel):
+# Modelo de dados da tarefa
+class Tarefa(BaseModel):
     titulo: str
-    descricao: str | None = None
-    valor: float
+    descricao: str | None = None  # Campo opcional
+    concluida: bool = False
+
+
+# Lista de tarefas (simulando um "banco de dados" na memória)
+tarefas = []
 
 
 @app.get("/")
 def root():
-    return {"Hello": "World"}
+    return {"mensagem": "Olá Mundo"}
 
 
-@app.get("/item/{item_id}")
-def get_item_by_id(item_id: int):
-    return {"ID": item_id}
-
-
-@app.get("/item")
-def get_item_by_name(nome: str):
-    return {"Nome": nome}
-
-
-@app.post("/item", status_code=status.HTTP_201_CREATED)
-def create_item(item: Item):
+@app.post("/tarefas", status_code=status.HTTP_201_CREATED)
+def criar_tarefa(tarefa: Tarefa):
+    tarefas.append(tarefa)
     return {
-        "status_code": status.HTTP_201_CREATED,
-        "content": {"mensagem": "Item criado com sucesso!", "item": item.model_dump()},
+        "mensagem": "Tarefa criada com sucesso!",
+        "tarefa": tarefa.model_dump(),
     }
+
+
+# Simula a busca de uma tarefa por seu ID, através de parâmetros da requisição
+# Exemplo de URL: http://localhost:8000/tarefas/123
+@app.get("/tarefas/{tarefa_id}")
+def get_item_by_id(tarefa_id: int):
+    return {"ID": tarefa_id}
+
+
+# Simula a busca de uma tarefa por seu ID, através de Query Parameters
+# Exemplo de URL: http://localhost:8000/tarefas?tarefa_id=123
+@app.get("/tarefas")
+def get_item_by_name(tarefa_id: int):
+    return {"ID da Tarefa": tarefa_id}
